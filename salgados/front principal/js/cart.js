@@ -188,7 +188,15 @@ const Cart = {
         if (!addressOptionsEl) return;
 
         const currentUser = Auth.getCurrentUser();
-        if (!currentUser) return;
+        if (!currentUser) {
+            addressOptionsEl.innerHTML = `
+                <div class="login-required">
+                    <p>Você precisa estar logado para selecionar endereço de entrega.</p>
+                    <button class="btn btn-primary" onclick="App.showAuthPages()">Fazer Login</button>
+                </div>
+            `;
+            return;
+        }
 
         // Obter endereço principal do usuário
         const mainAddress = {
@@ -293,6 +301,13 @@ function showPayment() {
         Utils.showMessage('Seu carrinho está vazio!', 'error');
         return;
     }
+
+    // Check if user is logged in before proceeding to payment
+    if (!Auth.isLoggedIn()) {
+        App.showAuthPages();
+        Utils.showMessage('Você precisa fazer login para finalizar o pedido!', 'error');
+        return;
+    }
     
     showPage('payment');
 }
@@ -306,6 +321,7 @@ async function finalizeOrder() {
     const currentUser = Auth.getCurrentUser();
     if (!currentUser) {
         Utils.showMessage('Você precisa estar logado para finalizar o pedido!', 'error');
+        App.showAuthPages();
         return;
     }
 

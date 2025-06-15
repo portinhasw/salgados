@@ -119,6 +119,16 @@ body {
     color: white !important;
 }
 
+/* Login button styling */
+.nav-btn[onclick*="showLogin"] {
+    background-color: #28a745;
+    color: white;
+}
+
+.nav-btn[onclick*="showLogin"]:hover {
+    background-color: #218838;
+}
+
 /* Pages */
 .page {
     display: none;
@@ -378,6 +388,20 @@ body {
     background-color: #d1ecf1;
     color: #0c5460;
     border: 1px solid #bee5eb;
+}
+
+/* Login required message in cart */
+.login-required {
+    text-align: center;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 2px solid #e9ecef;
+}
+
+.login-required p {
+    margin-bottom: 15px;
+    color: #6c757d;
 }
 
 /* Responsive */

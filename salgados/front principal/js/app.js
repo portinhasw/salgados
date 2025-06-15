@@ -13,7 +13,7 @@ const App = {
             return;
         }
         
-        // Always show main app first (cardápio)
+        // Always show main app first (cardápio) - no login required
         App.showMainApp();
         
         Utils.setLoading(false);
@@ -44,10 +44,32 @@ const App = {
         Menu.init();
         Cart.init();
         
-        // Only initialize history and profile if user is logged in
-        if (Auth.isLoggedIn()) {
-            History.init();
-            Profile.init();
+        // Update navbar based on login status
+        App.updateNavbarForLoginStatus();
+    },
+
+    // Update navbar based on login status
+    updateNavbarForLoginStatus: () => {
+        const isLoggedIn = Auth.isLoggedIn();
+        const navButtons = document.querySelectorAll('.nav-btn');
+        
+        navButtons.forEach(btn => {
+            const onclick = btn.getAttribute('onclick');
+            if (onclick && (onclick.includes('historico') || onclick.includes('perfil'))) {
+                if (!isLoggedIn) {
+                    btn.style.opacity = '0.6';
+                    btn.title = 'Faça login para acessar';
+                } else {
+                    btn.style.opacity = '1';
+                    btn.title = '';
+                }
+            }
+        });
+
+        // Show/hide logout button
+        const logoutBtn = document.querySelector('.logout-btn');
+        if (logoutBtn) {
+            logoutBtn.style.display = isLoggedIn ? 'block' : 'none';
         }
     },
 
@@ -76,10 +98,15 @@ const App = {
     // Show specific page
     showPage: (pageName) => {
         // Check if user needs to be logged in for certain pages
-        if ((pageName === 'carrinho' || pageName === 'historico' || pageName === 'perfil') && !Auth.isLoggedIn()) {
+        if ((pageName === 'historico' || pageName === 'perfil') && !Auth.isLoggedIn()) {
             App.showAuthPages();
             Utils.showMessage('Você precisa fazer login para acessar esta página!', 'error');
             return;
+        }
+
+        // For cart page, allow access but show login prompt when trying to checkout
+        if (pageName === 'carrinho' && !Auth.isLoggedIn()) {
+            // Allow access to cart page but will require login at checkout
         }
 
         App.currentPage = pageName;
@@ -106,13 +133,19 @@ const App = {
             case 'carrinho':
                 Cart.renderCart();
                 Cart.updateCartSummary();
-                Cart.loadAddressOptions();
+                if (Auth.isLoggedIn()) {
+                    Cart.loadAddressOptions();
+                }
                 break;
             case 'historico':
-                History.loadHistory();
+                if (Auth.isLoggedIn()) {
+                    History.loadHistory();
+                }
                 break;
             case 'perfil':
-                Profile.loadProfile();
+                if (Auth.isLoggedIn()) {
+                    Profile.loadProfile();
+                }
                 break;
         }
     },

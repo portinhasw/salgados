@@ -115,7 +115,8 @@ const Auth = {
                 return { success: false, message: response.mensagem };
             }
         } catch (error) {
-            return { success: false, message: error.message || 'Erro ao criar conta' };
+            console.error('Erro no registro:', error);
+            return { success: false, message: 'Erro ao criar conta. Verifique sua conexão e tente novamente.' };
         }
     },
 
@@ -159,6 +160,10 @@ const Auth = {
     logout: () => {
         Utils.storage.remove('currentUser');
         Utils.storage.remove('currentAdmin');
+        // Update navbar after logout
+        if (typeof App !== 'undefined' && App.updateNavbarForLoginStatus) {
+            App.updateNavbarForLoginStatus();
+        }
     },
 
     // Check if user is logged in
@@ -217,6 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 Utils.showMessage('Login realizado com sucesso!');
                 setTimeout(() => {
                     App.showMainApp();
+                    App.updateNavbarForLoginStatus();
                 }, 1500);
             } else {
                 Utils.showMessage(result.message, 'error');
@@ -238,6 +244,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 address: formData.get('address'),
                 number: formData.get('number'),
                 complement: formData.get('complement'),
+                neighborhood: formData.get('neighborhood'),
+                cep: formData.get('cep'),
                 city: formData.get('city'),
                 password: formData.get('password'),
                 confirmPassword: formData.get('confirmPassword')
@@ -251,6 +259,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 Utils.showMessage('Conta criada com sucesso!');
                 setTimeout(() => {
                     App.showMainApp();
+                    App.updateNavbarForLoginStatus();
                 }, 1500);
             } else {
                 Utils.showMessage(result.message, 'error');
@@ -328,7 +337,9 @@ function logout() {
     Auth.logout();
     Utils.showMessage('Logout realizado com sucesso!');
     setTimeout(() => {
-        App.showAuthPages();
+        // Stay on main app but update navbar
+        App.showMainApp();
+        showPage('cardapio');
     }, 1000);
 }
 

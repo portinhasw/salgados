@@ -45,7 +45,7 @@ class Cliente {
             }
 
             $endereco_result = $endereco_stmt->fetch(PDO::FETCH_ASSOC);
-            $this->codigo = $endereco_result['codigo'];
+            $this->codigo_endereco = $endereco_result['codigo'];
 
             // Depois, criar o cliente
             $cliente_query = "INSERT INTO " . $this->table_name . " 
