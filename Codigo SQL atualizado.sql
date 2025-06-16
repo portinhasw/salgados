@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS pedido (
 
 -- Tabela pedido_produto (relacionamento N:N)
 CREATE TABLE IF NOT EXISTS pedido_produto (
-    codigo_pedido INT ON DELETE CASCADE,
+    codigo_pedido INT,
     codigo_produto INT,
     quantidade INTEGER NOT NULL DEFAULT 1,
     preco_unitario DECIMAL(10,2) NOT NULL,
