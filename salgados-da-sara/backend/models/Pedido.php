@@ -64,7 +64,7 @@ class Pedido {
                               VALUES (:codigo_pedido, :codigo_produto, :quantidade, :preco_unitario, :tipo_quantidade, :quantidade_unidades)";
 
                 $item_stmt = $this->conn->prepare($item_query);
-                $item_stmt->bindParam(":codigo_pedido", $this->codigo_pedido);
+                $item_stmt->bindParam(":codigo_pedido", $this->codigo);
                 $item_stmt->bindParam(":codigo_produto", $item['codigo_produto']);
                 $item_stmt->bindParam(":quantidade", $item['quantidade']);
                 $item_stmt->bindParam(":preco_unitario", $item['preco_unitario']);
