@@ -152,7 +152,7 @@ class Pedido {
     function getItens() {
         $query = "SELECT pp.*, pr.nome, pr.sabor, c.nome_categoria
                   FROM pedido_produto pp
-                  JOIN produto pr ON pp.codigo_pedido = pr.codigo
+                  JOIN produto pr ON pp.codigo_produto = pr.codigo
                   LEFT JOIN categoria c ON pr.codigo_categoria = c.codigo
                   WHERE pp.codigo_pedido = :codigo";
 
@@ -197,6 +197,38 @@ class Pedido {
         return false;
     }
 
+    // Excluir pedido
+    function delete() {
+        try {
+            $this->conn->beginTransaction();
+
+            // Verificar se o pedido existe
+            if(!$this->readOne()) {
+                throw new Exception("Pedido não encontrado");
+            }
+
+            // Excluir delivery se existir (CASCADE já cuida disso)
+            // Excluir itens do pedido (CASCADE já cuida disso)
+            
+            // Excluir o pedido
+            $query = "DELETE FROM " . $this->table_name . " WHERE codigo = :codigo";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(":codigo", $this->codigo);
+
+            if($stmt->execute()) {
+                $this->conn->commit();
+                return true;
+            }
+
+            throw new Exception("Erro ao excluir pedido");
+
+        } catch (Exception $e) {
+            $this->conn->rollBack();
+            error_log("Erro ao excluir pedido: " . $e->getMessage());
+            return false;
+        }
+    }
+
     // Criar delivery se necessário
     function createDelivery($endereco_entrega, $sigla_cidade, $hora_delivery = null) {
         $query = "INSERT INTO delivery (endereco, codigo_pedido, sigla_cidade, hora_delivery, codigo_preco) 
@@ -205,7 +237,7 @@ class Pedido {
 
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(":endereco", $endereco_entrega);
-        $stmt->bindParam(":codigo_pedido", $this->codigo_pedido);
+        $stmt->bindParam(":codigo_pedido", $this->codigo);
         $stmt->bindParam(":sigla_cidade", $sigla_cidade);
         $stmt->bindParam(":hora_delivery", $hora_delivery);
 
