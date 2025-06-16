@@ -89,7 +89,8 @@ const Utils = {
     // Validar telefone
     isValidPhone: (phone) => {
         const phoneRegex = /^\(\d{2}\)\s\d{4,5}-\d{4}$/;
-        return phoneRegex.test(phone) || phone.replace(/\D/g, '').length >= 10;
+        const cleanPhone = phone.replace(/\D/g, '');
+        return phoneRegex.test(phone) || cleanPhone.length >= 10;
     },
 
     // Formatar telefone
@@ -100,6 +101,11 @@ const Utils = {
             return `(${match[1]}) ${match[2]}-${match[3]}`;
         }
         return phone;
+    },
+
+    // Limpar telefone (remover formatação)
+    cleanPhone: (phone) => {
+        return phone.replace(/\D/g, '');
     },
 
     // Calcular preço do item

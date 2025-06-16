@@ -56,7 +56,7 @@ class Cliente {
 
             // Sanitizar
             $this->nome = htmlspecialchars(strip_tags($this->nome));
-            $this->telefone = htmlspecialchars(strip_tags($this->telefone));
+            $this->telefone = preg_replace('/\D/', '', $this->telefone); // Remove caracteres não numéricos
             $this->email = htmlspecialchars(strip_tags($this->email));
             $this->senha = password_hash($this->senha, PASSWORD_DEFAULT);
 
@@ -85,6 +85,9 @@ class Cliente {
 
     // Login cliente
     function login($telefone, $senha) {
+        // Limpar telefone para busca
+        $telefone_limpo = preg_replace('/\D/', '', $telefone);
+        
         $query = "SELECT c.codigo, c.nome, c.telefone, c.email, c.senha, c.criado_em,
                          e.rua, e.numero, e.cep, e.complemento, e.bairro,
                          ci.nome as cidade_nome, c.sigla_cidade
@@ -94,7 +97,7 @@ class Cliente {
                   WHERE c.telefone = :telefone";
 
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":telefone", $telefone);
+        $stmt->bindParam(":telefone", $telefone_limpo);
         $stmt->execute();
 
         if($stmt->rowCount() > 0) {
@@ -121,11 +124,13 @@ class Cliente {
 
     // Verificar se cliente existe
     function clienteExists() {
+        $telefone_limpo = preg_replace('/\D/', '', $this->telefone);
+        
         $query = "SELECT codigo FROM " . $this->table_name . " 
                   WHERE telefone = :telefone OR email = :email";
 
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":telefone", $this->telefone);
+        $stmt->bindParam(":telefone", $telefone_limpo);
         $stmt->bindParam(":email", $this->email);
         $stmt->execute();
 
@@ -167,11 +172,13 @@ class Cliente {
 
     // Obter cliente por telefone para recuperação de senha
     function getByPhone($telefone) {
+        $telefone_limpo = preg_replace('/\D/', '', $telefone);
+        
         $query = "SELECT codigo, nome, telefone, email FROM " . $this->table_name . " 
                   WHERE telefone = :telefone";
 
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":telefone", $telefone);
+        $stmt->bindParam(":telefone", $telefone_limpo);
         $stmt->execute();
 
         if($stmt->rowCount() > 0) {

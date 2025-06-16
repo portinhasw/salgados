@@ -37,7 +37,7 @@ const Auth = {
     login: async (phone, password) => {
         try {
             const response = await ApiClient.post(API_CONFIG.endpoints.login, {
-                phone: phone,
+                phone: Utils.cleanPhone(phone),
                 password: password
             });
             
@@ -91,7 +91,7 @@ const Auth = {
         try {
             const response = await ApiClient.post(API_CONFIG.endpoints.register, {
                 name: userData.name.trim(),
-                phone: Utils.formatPhone(userData.phone),
+                phone: Utils.cleanPhone(userData.phone),
                 email: userData.email.trim(),
                 address: userData.address.trim(),
                 number: userData.number.trim(),
@@ -124,7 +124,7 @@ const Auth = {
     forgotPassword: async (phone) => {
         try {
             const response = await ApiClient.post(API_CONFIG.endpoints.forgotPassword, {
-                phone: phone
+                phone: Utils.cleanPhone(phone)
             });
             
             if (response.sucesso) {

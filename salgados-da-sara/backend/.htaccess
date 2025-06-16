@@ -24,6 +24,7 @@ RewriteRule ^api/products/delete/?$ api/products/delete.php [L]
 RewriteRule ^api/orders/?$ api/orders/read.php [L]
 RewriteRule ^api/orders/create/?$ api/orders/create.php [L]
 RewriteRule ^api/orders/update-status/?$ api/orders/update-status.php [L]
+RewriteRule ^api/orders/delete/?$ api/orders/delete.php [L]
 
 RewriteRule ^api/admin/admins/?$ api/admin/admins.php [L]
 RewriteRule ^api/config/?$ api/config/config.php [L]

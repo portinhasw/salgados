@@ -18,6 +18,7 @@ const API_CONFIG = {
         orders: '/orders',
         createOrder: '/orders/create',
         updateOrderStatus: '/orders/update-status',
+        deleteOrder: '/orders/delete',
         
         // Admin
         admins: '/admin/admins',

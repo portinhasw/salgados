@@ -133,6 +133,12 @@ const Admin = {
                                     <strong>Motivo da recusa:</strong> ${order.motivo_rejeicao}
                                 </div>
                             ` : ''}
+                            
+                            ${Auth.hasAdminPermission('pedidos') ? `
+                                <button class="btn btn-danger" onclick="Admin.deleteOrder('${order.id}')">
+                                    Excluir
+                                </button>
+                            ` : ''}
                         </div>
                     </div>
                 `).join('');
@@ -152,6 +158,32 @@ const Admin = {
                     <p>Verifique sua conexão e tente novamente.</p>
                 </div>
             `;
+        }
+    },
+
+    // Excluir pedido
+    deleteOrder: async (orderId) => {
+        if (!Auth.hasAdminPermission('pedidos')) {
+            Utils.showMessage('Você não tem permissão para esta ação!', 'error');
+            return;
+        }
+        
+        if (confirm('Tem certeza que deseja excluir este pedido? Esta ação não pode ser desfeita.')) {
+            try {
+                const response = await ApiClient.delete(API_CONFIG.endpoints.deleteOrder, {
+                    id: orderId
+                });
+                
+                if (response.sucesso) {
+                    Admin.loadOrders();
+                    Utils.showMessage('Pedido excluído com sucesso!');
+                } else {
+                    Utils.showMessage(response.mensagem || 'Erro ao excluir pedido', 'error');
+                }
+            } catch (error) {
+                console.error('Erro ao excluir pedido:', error);
+                Utils.showMessage('Erro ao excluir pedido. Tente novamente.', 'error');
+            }
         }
     },
 
