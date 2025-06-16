@@ -1,12 +1,12 @@
 -- Tabela cidade
-CREATE TABLE IF NOT EXISTS cidade (
+CREATE TABLE cidade (
     sigla VARCHAR(5),
     nome VARCHAR(100) NOT NULL UNIQUE,
 	CONSTRAINT pk_cidade PRIMARY KEY (sigla)
 );
 
 -- Tabela endereco
-CREATE TABLE IF NOT EXISTS endereco (
+CREATE TABLE endereco (
     codigo SERIAL,
     rua VARCHAR(255) NOT NULL,
     numero NUMERIC NOT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS endereco (
 );
 
 -- Tabela categoria
-CREATE TABLE IF NOT EXISTS categoria (
+CREATE TABLE categoria (
     codigo SERIAL,
     nome_categoria VARCHAR(100) NOT NULL UNIQUE,
     descricao_categoria TEXT,
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS categoria (
 );
 
 -- Tabela preco_delivery
-CREATE TABLE IF NOT EXISTS preco_delivery (
+CREATE TABLE preco_delivery (
     codigo SERIAL,
     valor DECIMAL(10,2) NOT NULL,
     descricao VARCHAR(255),
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS preco_delivery (
 );
 
 -- Tabela cliente (antiga usuarios)
-CREATE TABLE IF NOT EXISTS cliente (
+CREATE TABLE cliente (
     codigo SERIAL,
     nome VARCHAR(255) NOT NULL,
     telefone NUMERIC UNIQUE NOT NULL,
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS cliente (
 );
 
 -- Tabela produto
-CREATE TABLE IF NOT EXISTS produto (
+CREATE TABLE produto (
     codigo SERIAL,
     nome VARCHAR(255) NOT NULL,
     preco DECIMAL(10,2) NOT NULL,
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS produto (
 );
 
 -- Tabela pedido
-CREATE TABLE IF NOT EXISTS pedido (
+CREATE TABLE pedido (
     codigo SERIAL,
     numero_pedido VARCHAR(50) UNIQUE NOT NULL,
     valor DECIMAL(10,2) NOT NULL,
@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS pedido (
 );
 
 -- Tabela pedido_produto (relacionamento N:N)
-CREATE TABLE IF NOT EXISTS pedido_produto (
+CREATE TABLE pedido_produto (
     codigo_pedido INT,
     codigo_produto INT,
     quantidade INTEGER NOT NULL DEFAULT 1,
@@ -92,7 +92,7 @@ CREATE TABLE IF NOT EXISTS pedido_produto (
 );
 
 -- Tabela delivery
-CREATE TABLE IF NOT EXISTS delivery (
+CREATE TABLE delivery (
     codigo SERIAL,
     hora_delivery TIME,
     endereco TEXT NOT NULL,
@@ -107,7 +107,7 @@ CREATE TABLE IF NOT EXISTS delivery (
 );
 
 -- Tabela admin
-CREATE TABLE IF NOT EXISTS admin (
+CREATE TABLE admin (
     codigo SERIAL,
     login VARCHAR(100) UNIQUE NOT NULL,
     senha VARCHAR(255) NOT NULL,
