@@ -13,6 +13,13 @@ const Menu = {
 
     // Load menu items from API
     loadMenuItems: async () => {
+        // Verificar se ApiClient está disponível
+        if (typeof ApiClient === 'undefined') {
+            console.error('ApiClient não está disponível');
+            Menu.renderMenuItems(); // Renderizar vazio
+            return;
+        }
+        
         try {
             const response = await ApiClient.get(API_CONFIG.endpoints.products);
             

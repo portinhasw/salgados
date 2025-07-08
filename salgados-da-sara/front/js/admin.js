@@ -35,6 +35,12 @@ const Admin = {
 
     // Carregar pedidos para o administrador
     loadOrders: async () => {
+        // Verificar se ApiClient está disponível
+        if (typeof ApiClient === 'undefined') {
+            console.error('ApiClient não está disponível');
+            return;
+        }
+        
         const ordersContainer = document.getElementById('admin-orders');
         if (!ordersContainer) return;
 
@@ -287,6 +293,12 @@ const Admin = {
     loadProducts: async () => {
         if (!Auth.hasAdminPermission('produtos')) return;
         
+        // Verificar se ApiClient está disponível
+        if (typeof ApiClient === 'undefined') {
+            console.error('ApiClient não está disponível');
+            return;
+        }
+        
         const productsContainer = document.getElementById('admin-products');
         if (!productsContainer) return;
 
@@ -526,6 +538,12 @@ const Admin = {
     loadAdmins: async () => {
         if (!Auth.hasAdminPermission('administradores')) return;
         
+        // Verificar se ApiClient está disponível
+        if (typeof ApiClient === 'undefined') {
+            console.error('ApiClient não está disponível');
+            return;
+        }
+        
         const adminsContainer = document.getElementById('admin-admins');
         if (!adminsContainer) return;
 
@@ -655,6 +673,12 @@ const Admin = {
     // Carregar configuração
     loadConfig: async () => {
         if (!Auth.hasAdminPermission('configuracoes')) return;
+        
+        // Verificar se ApiClient está disponível
+        if (typeof ApiClient === 'undefined') {
+            console.error('ApiClient não está disponível');
+            return;
+        }
         
         const deliveryPriceInput = document.getElementById('delivery-price');
         if (!deliveryPriceInput) return;

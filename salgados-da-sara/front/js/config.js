@@ -82,6 +82,6 @@ const ApiClient = {
     }
 };
 
-// Tornar disponível globalmente
+// Tornar disponível globalmente IMEDIATAMENTE
 window.API_CONFIG = API_CONFIG;
 window.ApiClient = ApiClient;

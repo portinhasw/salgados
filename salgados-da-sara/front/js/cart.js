@@ -14,6 +14,12 @@ const Cart = {
 
     // Carregar taxa de entrega da API
     loadDeliveryFee: async () => {
+        // Verificar se ApiClient está disponível
+        if (typeof ApiClient === 'undefined') {
+            console.error('ApiClient não está disponível');
+            return;
+        }
+        
         try {
             const response = await ApiClient.get(`${API_CONFIG.endpoints.config}?key=taxa_entrega`);
             if (response.sucesso && response.dados.taxa_entrega) {

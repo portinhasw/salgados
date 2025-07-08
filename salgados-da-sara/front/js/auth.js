@@ -35,6 +35,11 @@ const Auth = {
 
     // Login user
     login: async (phone, password) => {
+        // Verificar se ApiClient está disponível
+        if (typeof ApiClient === 'undefined') {
+            return { success: false, message: 'Sistema não está disponível no momento' };
+        }
+        
         try {
             const response = await ApiClient.post(API_CONFIG.endpoints.login, {
                 phone: Utils.cleanPhone(phone),
@@ -54,6 +59,11 @@ const Auth = {
 
     // Register user
     register: async (userData) => {
+        // Verificar se ApiClient está disponível
+        if (typeof ApiClient === 'undefined') {
+            return { success: false, message: 'Sistema não está disponível no momento' };
+        }
+        
         // Validate password strength
         const passwordErrors = Auth.validatePassword(userData.password);
         if (passwordErrors.length > 0) {
@@ -122,6 +132,11 @@ const Auth = {
 
     // Forgot password
     forgotPassword: async (phone) => {
+        // Verificar se ApiClient está disponível
+        if (typeof ApiClient === 'undefined') {
+            return { success: false, message: 'Sistema não está disponível no momento' };
+        }
+        
         try {
             const response = await ApiClient.post(API_CONFIG.endpoints.forgotPassword, {
                 phone: Utils.cleanPhone(phone)
@@ -139,6 +154,11 @@ const Auth = {
 
     // Admin login
     adminLogin: async (username, password) => {
+        // Verificar se ApiClient está disponível
+        if (typeof ApiClient === 'undefined') {
+            return { success: false, message: 'Sistema não está disponível no momento' };
+        }
+        
         try {
             const response = await ApiClient.post(API_CONFIG.endpoints.adminLogin, {
                 username: username,
