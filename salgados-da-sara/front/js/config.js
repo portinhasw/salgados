@@ -1,6 +1,6 @@
 // Configuração da API
 const API_CONFIG = {
-    baseURL: 'http://localhost/salgados-da-sara/backend/api',
+    baseURL: 'http://localhost:8000/api',
     endpoints: {
         // Auth
         login: '/auth/login',
@@ -43,6 +43,13 @@ const ApiClient = {
         
         try {
             const response = await fetch(url, config);
+            
+            // Verificar se a resposta é HTML (página de erro)
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.includes('text/html')) {
+                throw new Error('Servidor retornou HTML em vez de JSON. Verifique se o backend está rodando.');
+            }
+            
             const data = await response.json();
             
             if (!response.ok) {
@@ -51,7 +58,13 @@ const ApiClient = {
             
             return data;
         } catch (error) {
-            console.error('Erro na API:', error);
+            console.error('Erro na API:', error.message);
+            
+            // Se for erro de conexão, mostrar mensagem mais clara
+            if (error.message.includes('fetch')) {
+                throw new Error('Não foi possível conectar ao servidor. Verifique se o backend está rodando.');
+            }
+            
             throw error;
         }
     },
