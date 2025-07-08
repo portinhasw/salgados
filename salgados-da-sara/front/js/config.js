@@ -1,6 +1,6 @@
 // Configuração da API
 const API_CONFIG = {
-    baseURL: 'http://localhost:8080/api',
+    baseURL: 'http://localhost/salgados-da-sara/backend/api',
     endpoints: {
         // Auth
         login: '/auth/login',
